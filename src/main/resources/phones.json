@@ -1,0 +1,25 @@
+{
+  "phones": [
+    {
+      "id": "unique_id_1",
+      "name": "IPhone 12",
+      "price": 789.99,
+      "description": "128GB Black",
+      "photo": "https://img.5element.by/import/images/ut/goods/good_bb3ba837-0df9-11eb-80c1-005056844aec/iphone-12-128gb-black-telefon-gsm-apple-mgja3rm-a-1_600.jpg"
+    },
+    {
+      "id": "unique_id_2",
+      "name": "IPhone 11",
+      "price": 670.99,
+      "description": "64GB Black",
+      "photo": "https://img.5element.by/import/images/ut/goods/good_9cdbbb14-4044-11eb-bb92-0050560120e8/iphone-11-64gb-black-telefon-gsm-apple-mhda3rm-a-1_600.jpg"
+    },
+    {
+      "id": "unique_id_3",
+      "name": "IPhone 13",
+      "price": 1299.99,
+      "description": "256GB Blue",
+      "photo": "https://img.5element.by/import/images/ut/goods/good_f1b8d315-161d-11ec-bb93-0050560120e8/iphone-13-256gb-blue-telefon-gsm-apple-mlp73rk-a-1_600.jpg"
+    }
+  ]
+}

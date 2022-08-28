@@ -5,13 +5,11 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.PreCheckoutQuery;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.LabeledPrice;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.AnswerPreCheckoutQuery;
-import com.pengrad.telegrambot.request.SendInvoice;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
+import com.pengrad.telegrambot.request.SendPhoto;
+import me.telegram.bot.service.PhoneService;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -54,31 +52,30 @@ public class TelegramBotApplication extends TelegramBot {
     private void serveCommand(String commandName, Long chatId) {
         switch (commandName) {
             case "/start": {
-                SendMessage response = new SendMessage(chatId, "Вы ввели команду /start");
+                SendMessage response = new SendMessage(chatId,
+                        "Список команд:\n/menu - Главное меню\n/start - Начало работы");
                 this.execute(response);
                 break;
             }
-            case "/help": {
-                SendMessage response = new SendMessage(chatId, "Вы ввели команду /help");
+            case "/menu": {
+                SendMessage response = new SendMessage(chatId, "Меню")
+                        .replyMarkup(new ReplyKeyboardMarkup(new String[][] {
+                                {"Товары", "Отзывы"},
+                                {"Поддержка"}
+                        }).resizeKeyboard(true));
                 this.execute(response);
+                break;
+            }
+            case "Товары": {
+                PhoneService.getInstance().getPhones().stream()
+                        .map(phone -> new SendPhoto(chatId, phone.getPhoto())
+                                .caption(String.format("%s - %s", phone.getName(), phone.getDescription())))
+                        .forEach(this::execute);
                 break;
             }
             default: {
-                SendInvoice sendInvoice = new SendInvoice(chatId, "title", "desc", "my_payload",
-                        "381764678:TEST:39440", "my_start_param", "RUB", new LabeledPrice("label", 200 * 100))
-                        .needPhoneNumber(false)
-                        .needShippingAddress(false)
-                        .needPhoneNumber(true)
-                        .startParameter("get_access")
-                        .isFlexible(false)
-                        .maxTipAmount(5000 * 100)
-                        .suggestedTipAmounts(new Integer[] {5 * 100, 10 * 100, 25 * 100, 50 * 100})
-                        .replyMarkup(new InlineKeyboardMarkup(
-                                new InlineKeyboardButton("just pay").pay(),
-                                new InlineKeyboardButton("google it").url("www.google.com"))
-                        );
-                SendResponse response = execute(sendInvoice);
-                System.out.println(response.toString());
+                SendMessage response = new SendMessage(chatId, "Команда не распознана");
+                this.execute(response);
                 break;
             }
         }

@@ -42,11 +42,6 @@ public class TelegramBotApplication extends TelegramBot {
             Optional.ofNullable(text)
                     .ifPresent(commandName -> this.serveCommand(commandName, message.chat().id()));
         }
-        PreCheckoutQuery preCheckoutQuery = update.preCheckoutQuery();
-        if (preCheckoutQuery != null) {
-            AnswerPreCheckoutQuery answerPreCheckoutQuery = new AnswerPreCheckoutQuery(preCheckoutQuery.id());
-            execute(answerPreCheckoutQuery);
-        }
     }
 
     private void serveCommand(String commandName, Long chatId) {
